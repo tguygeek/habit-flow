@@ -3,6 +3,13 @@
 All notable changes to HabitFlow are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [1.0.2] - 2026-09-24
+### Fixed
+- Removed a dangling `assets/icons/` declaration in `pubspec.yaml`.
+  The directory was empty and unused (all icons come from Material's
+  built-in `Icons` set), and git doesn't track empty directories, so it
+  vanished on push and `flutter analyze` failed on the missing path.
+
 ## [1.0.1] - 2026-09-23
 ### Fixed
 - **Race condition in `HabitProvider`**: a mutation (`addHabit`,

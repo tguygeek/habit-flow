@@ -7,8 +7,7 @@ import 'package:habit_flow/main.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
-  testWidgets('HabitFlowApp launches and shows the home screen',
-      (WidgetTester tester) async {
+  testWidgets('HabitFlowApp launches and shows the home screen', (WidgetTester tester) async {
     SharedPreferences.setMockInitialValues(<String, Object>{});
 
     await tester.pumpWidget(const HabitFlowApp());

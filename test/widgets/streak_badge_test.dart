@@ -3,8 +3,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:habit_flow/widgets/streak_badge.dart';
 
 void main() {
-  testWidgets('shows the fire icon and count when streak > 0',
-      (WidgetTester tester) async {
+  testWidgets('shows the fire icon and count when streak > 0', (WidgetTester tester) async {
     await tester.pumpWidget(
       const MaterialApp(
         home: Scaffold(body: StreakBadge(streak: 5, label: '5 day streak')),
@@ -15,8 +14,7 @@ void main() {
     expect(find.byIcon(Icons.local_fire_department), findsOneWidget);
   });
 
-  testWidgets('shows an outline icon when streak is 0',
-      (WidgetTester tester) async {
+  testWidgets('shows an outline icon when streak is 0', (WidgetTester tester) async {
     await tester.pumpWidget(
       const MaterialApp(
         home: Scaffold(body: StreakBadge(streak: 0, label: 'No streak yet')),
@@ -27,8 +25,7 @@ void main() {
     expect(find.byIcon(Icons.circle_outlined), findsOneWidget);
   });
 
-  testWidgets('exposes the semantic label for screen readers',
-      (WidgetTester tester) async {
+  testWidgets('exposes the semantic label for screen readers', (WidgetTester tester) async {
     final SemanticsHandle handle = tester.ensureSemantics();
 
     await tester.pumpWidget(

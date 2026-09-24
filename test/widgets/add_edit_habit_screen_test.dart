@@ -7,8 +7,7 @@ import 'package:provider/provider.dart';
 import 'test_helpers.dart';
 
 void main() {
-  testWidgets('shows a validation error when saving with an empty name',
-      (WidgetTester tester) async {
+  testWidgets('shows a validation error when saving with an empty name', (WidgetTester tester) async {
     await pumpAndSettleTest(
       tester,
       wrapForTest(const AddEditHabitScreen()),
@@ -20,9 +19,7 @@ void main() {
     expect(find.text('Please enter a habit name'), findsOneWidget);
   });
 
-  testWidgets(
-      'saving a valid name adds a habit and pops back to the previous screen',
-      (WidgetTester tester) async {
+  testWidgets('saving a valid name adds a habit and pops back to the previous screen', (WidgetTester tester) async {
     // Mount AddEditHabitScreen behind a real navigation stack (push/pop),
     // matching how it's actually reached in the app — pop()ing the very
     // last route in the stack (as would happen if this screen were the
@@ -58,8 +55,7 @@ void main() {
     expect(find.text('Open'), findsOneWidget);
 
     final BuildContext context = tester.element(find.byType(Scaffold).first);
-    final HabitProvider provider =
-        Provider.of<HabitProvider>(context, listen: false);
+    final HabitProvider provider = Provider.of<HabitProvider>(context, listen: false);
     expect(provider.habits.any((h) => h.name == 'Yoga'), isTrue);
   });
 }

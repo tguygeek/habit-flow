@@ -12,8 +12,8 @@ class SettingsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final AppLocalizations l10n = AppLocalizations.of(context);
     final SettingsProvider settings = context.watch<SettingsProvider>();
-    final String currentLang = settings.locale?.languageCode ??
-        Localizations.localeOf(context).languageCode;
+    final String currentLang =
+        settings.locale?.languageCode ?? Localizations.localeOf(context).languageCode;
 
     return Scaffold(
       appBar: AppBar(title: Text(l10n.settingsTitle)),

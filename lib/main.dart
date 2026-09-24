@@ -19,8 +19,8 @@ class HabitFlowApp extends StatelessWidget {
     return MultiProvider(
       providers: <ChangeNotifierProvider<dynamic>>[
         ChangeNotifierProvider<HabitProvider>(
-          create: (_) =>
-              HabitProvider(repository: LocalHabitRepository())..load(),
+          create: (_) => HabitProvider(repository: LocalHabitRepository())
+            ..load(),
         ),
         ChangeNotifierProvider<SettingsProvider>(
           create: (_) => SettingsProvider()..load(),

@@ -29,8 +29,11 @@ dev_dependencies:
 flutter:
   uses-material-design: true
   generate: true
-  assets:
-    - assets/icons/
+  # No bundled image assets: every icon in this app comes from Material's
+  # built-in Icons set, so there is nothing to declare here. (An empty
+  # assets/icons/ directory was previously listed, but git doesn't track
+  # empty directories, so it silently vanished from the repo on push —
+  # this is that dangling reference, removed.)
 
 flutter_intl:
   enabled: true
