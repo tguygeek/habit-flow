@@ -11,9 +11,8 @@ class StreakBadge extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final ColorScheme scheme = Theme.of(context).colorScheme;
-    final Color bg = streak > 0
-        ? scheme.primaryContainer
-        : scheme.surfaceContainerHighest;
+    final Color bg =
+        streak > 0 ? scheme.primaryContainer : scheme.surfaceContainerHighest;
     final Color fg =
         streak > 0 ? scheme.onPrimaryContainer : scheme.onSurfaceVariant;
 

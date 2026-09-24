@@ -45,7 +45,8 @@ void main() {
     expect(tapped, isTrue);
   });
 
-  testWidgets('tapping the checkbox triggers onToggleToday', (WidgetTester tester) async {
+  testWidgets('tapping the checkbox triggers onToggleToday',
+      (WidgetTester tester) async {
     bool toggled = false;
     await tester.pumpWidget(
       _wrap(

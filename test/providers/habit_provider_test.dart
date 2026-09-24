@@ -45,7 +45,8 @@ void main() {
 
   test('addHabit appends a new habit and persists it', () async {
     await provider.load();
-    await provider.addHabit(name: 'Meditate', category: HabitCategory.mindfulness);
+    await provider.addHabit(
+        name: 'Meditate', category: HabitCategory.mindfulness);
     expect(provider.habits, hasLength(1));
     expect(provider.habits.first.name, 'Meditate');
     expect(repo.saveCallCount, greaterThan(0));

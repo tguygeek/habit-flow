@@ -115,8 +115,8 @@ class HabitProvider extends ChangeNotifier {
   int get bestStreakAcrossAll => _habits.isEmpty
       ? 0
       : _habits.map(StreakCalculator.bestStreak).reduce(
-          (int a, int b) => a > b ? a : b,
-        );
+            (int a, int b) => a > b ? a : b,
+          );
 
   double get overallCompletionRate {
     if (_habits.isEmpty) return 0;

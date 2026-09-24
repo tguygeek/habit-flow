@@ -30,8 +30,7 @@ class HabitDetailScreen extends StatelessWidget {
 
     final int streak = StreakCalculator.currentStreak(habit);
     final int best = StreakCalculator.bestStreak(habit);
-    final int percent =
-        (StreakCalculator.completionRate(habit) * 100).round();
+    final int percent = (StreakCalculator.completionRate(habit) * 100).round();
 
     return Scaffold(
       appBar: AppBar(
@@ -65,7 +64,8 @@ class HabitDetailScreen extends StatelessWidget {
           Row(
             children: <Widget>[
               Expanded(
-                child: _StatTile(label: l10n.currentStreak(streak), value: '$streak'),
+                child: _StatTile(
+                    label: l10n.currentStreak(streak), value: '$streak'),
               ),
               Expanded(
                 child: _StatTile(label: l10n.bestStreak, value: '$best'),

@@ -39,16 +39,25 @@ void main() {
 
     expect(reloaded, hasLength(2));
     expect(reloaded.map((Habit h) => h.id), containsAll(<String>['1', '2']));
-    expect(reloaded.firstWhere((Habit h) => h.id == '1').completions, hasLength(1));
+    expect(reloaded.firstWhere((Habit h) => h.id == '1').completions,
+        hasLength(1));
   });
 
   test('saveAll overwrites any previously stored list', () async {
     final LocalHabitRepository repo = LocalHabitRepository();
     await repo.saveAll(<Habit>[
-      Habit(id: '1', name: 'A', category: HabitCategory.other, createdAt: DateTime(2026, 1, 1)),
+      Habit(
+          id: '1',
+          name: 'A',
+          category: HabitCategory.other,
+          createdAt: DateTime(2026, 1, 1)),
     ]);
     await repo.saveAll(<Habit>[
-      Habit(id: '2', name: 'B', category: HabitCategory.other, createdAt: DateTime(2026, 1, 2)),
+      Habit(
+          id: '2',
+          name: 'B',
+          category: HabitCategory.other,
+          createdAt: DateTime(2026, 1, 2)),
     ]);
     final List<Habit> reloaded = await repo.loadAll();
     expect(reloaded, hasLength(1));
