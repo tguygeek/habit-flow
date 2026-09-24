@@ -1,0 +1,31 @@
+# Flutter/Dart
+.dart_tool/
+.packages
+build/
+.flutter-plugins
+.flutter-plugins-dependencies
+.pub-cache/
+.pub/
+/pubspec.lock
+
+# Generated localization
+lib/l10n/generated/
+
+# IDE
+.idea/
+.vscode/
+*.iml
+
+# Coverage
+coverage/
+
+# macOS
+.DS_Store
+
+# Platform build artifacts (generate with `flutter create .` if missing)
+android/
+ios/
+macos/
+linux/
+windows/
+web/
