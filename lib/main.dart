@@ -18,6 +18,11 @@ void main() async {
     await Permission.notification.request();
   }
 
+  // Request notification permission on iOS
+  if (Platform.isIOS) {
+    await Permission.notification.request();
+  }
+
   runApp(const HabitFlowApp());
 }
 

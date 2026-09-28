@@ -76,6 +76,9 @@ class HabitProvider extends ChangeNotifier {
     String description = '',
     HabitCategory category = HabitCategory.other,
     int weeklyTarget = 5,
+    bool enableReminders = false,
+    int? reminderHour,
+    int? reminderMinute,
   }) async {
     await _awaitInitialLoad();
     final Habit habit = Habit(
@@ -85,10 +88,27 @@ class HabitProvider extends ChangeNotifier {
       category: category,
       weeklyTarget: weeklyTarget,
       createdAt: DateTime.now(),
+      enableReminders: enableReminders,
+      reminderHour: reminderHour,
+      reminderMinute: reminderMinute,
     );
     _habits = <Habit>[..._habits, habit];
     notifyListeners();
     await _repository.saveAll(_habits);
+
+    // Schedule reminders if enabled
+    if (ReminderCalculator.shouldHaveReminder(
+      enableReminders: enableReminders,
+      reminderHour: reminderHour,
+      reminderMinute: reminderMinute,
+    )) {
+      await _notificationService.scheduleReminder(
+        habitId: habit.id,
+        habitName: habit.name,
+        reminderHour: reminderHour!,
+        reminderMinute: reminderMinute!,
+      );
+    }
   }
 
   Future<void> updateHabit(Habit updated) async {

@@ -60,6 +60,9 @@ class _AddEditHabitScreenState extends State<AddEditHabitScreen> {
         description: _descController.text.trim(),
         category: _category,
         weeklyTarget: _weeklyTarget,
+        enableReminders: _enableReminders,
+        reminderHour: _reminderHour,
+        reminderMinute: _reminderMinute,
       );
     } else {
       await provider.updateHabit(
