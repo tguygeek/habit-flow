@@ -7,7 +7,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 /// change (and vice versa).
 class SettingsProvider extends ChangeNotifier {
   SettingsProvider({SharedPreferences? preferences})
-      : _preferences = preferences;
+    : _preferences = preferences;
 
   static const String _localeKey = 'habit_flow.locale.v1';
   static const String _themeKey = 'habit_flow.theme.v1';

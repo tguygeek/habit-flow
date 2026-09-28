@@ -75,19 +75,19 @@ class Habit {
   }
 
   Map<String, dynamic> toJson() => <String, dynamic>{
-        'id': id,
-        'name': name,
-        'description': description,
-        'category': category.name,
-        'weeklyTarget': weeklyTarget,
-        'createdAt': createdAt.toIso8601String(),
-        'completions':
-            completions.map((DateTime d) => d.toIso8601String()).toList(),
-        'imageUrl': imageUrl,
-        'reminderHour': reminderHour,
-        'reminderMinute': reminderMinute,
-        'enableReminders': enableReminders,
-      };
+    'id': id,
+    'name': name,
+    'description': description,
+    'category': category.name,
+    'weeklyTarget': weeklyTarget,
+    'createdAt': createdAt.toIso8601String(),
+    'completions':
+        completions.map((DateTime d) => d.toIso8601String()).toList(),
+    'imageUrl': imageUrl,
+    'reminderHour': reminderHour,
+    'reminderMinute': reminderMinute,
+    'enableReminders': enableReminders,
+  };
 
   factory Habit.fromJson(Map<String, dynamic> json) {
     return Habit(
@@ -97,9 +97,10 @@ class Habit {
       category: HabitCategory.fromName(json['category'] as String),
       weeklyTarget: (json['weeklyTarget'] as num?)?.toInt() ?? 5,
       createdAt: DateTime.parse(json['createdAt'] as String),
-      completions: ((json['completions'] as List<dynamic>?) ?? <dynamic>[])
-          .map((dynamic e) => DateTime.parse(e as String))
-          .toSet(),
+      completions:
+          ((json['completions'] as List<dynamic>?) ?? <dynamic>[])
+              .map((dynamic e) => DateTime.parse(e as String))
+              .toSet(),
       imageUrl: json['imageUrl'] as String?,
       reminderHour: (json['reminderHour'] as num?)?.toInt(),
       reminderMinute: (json['reminderMinute'] as num?)?.toInt(),
@@ -126,16 +127,16 @@ class Habit {
 
   @override
   int get hashCode => Object.hash(
-        id,
-        name,
-        description,
-        category,
-        weeklyTarget,
-        createdAt,
-        completions.length,
-        imageUrl,
-        reminderHour,
-        reminderMinute,
-        enableReminders,
-      );
+    id,
+    name,
+    description,
+    category,
+    weeklyTarget,
+    createdAt,
+    completions.length,
+    imageUrl,
+    reminderHour,
+    reminderMinute,
+    enableReminders,
+  );
 }

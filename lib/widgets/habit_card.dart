@@ -82,15 +82,15 @@ class _Leading extends StatelessWidget {
         height: 40,
         fit: BoxFit.cover,
         memCacheWidth: 80,
-        placeholder: (BuildContext context, String _) => Container(
-          width: 40,
-          height: 40,
-          color: habit.category.color.withValues(alpha: 0.15),
-        ),
-        errorWidget: (BuildContext context, String _, Object __) => Icon(
-          habit.category.icon,
-          color: habit.category.color,
-        ),
+        placeholder:
+            (BuildContext context, String _) => Container(
+              width: 40,
+              height: 40,
+              color: habit.category.color.withValues(alpha: 0.15),
+            ),
+        errorWidget:
+            (BuildContext context, String _, Object __) =>
+                Icon(habit.category.icon, color: habit.category.color),
       ),
     );
   }

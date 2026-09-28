@@ -30,8 +30,7 @@ class HabitDetailScreen extends StatelessWidget {
 
     final int streak = StreakCalculator.currentStreak(habit);
     final int best = StreakCalculator.bestStreak(habit);
-    final int percent =
-        (StreakCalculator.completionRate(habit) * 100).round();
+    final int percent = (StreakCalculator.completionRate(habit) * 100).round();
 
     return Scaffold(
       appBar: AppBar(
@@ -40,11 +39,12 @@ class HabitDetailScreen extends StatelessWidget {
           IconButton(
             icon: const Icon(Icons.edit),
             tooltip: l10n.editHabit,
-            onPressed: () => Navigator.of(context).push(
-              MaterialPageRoute<void>(
-                builder: (_) => AddEditHabitScreen(existing: habit),
-              ),
-            ),
+            onPressed:
+                () => Navigator.of(context).push(
+                  MaterialPageRoute<void>(
+                    builder: (_) => AddEditHabitScreen(existing: habit),
+                  ),
+                ),
           ),
           IconButton(
             icon: const Icon(Icons.delete_outline),
@@ -65,7 +65,10 @@ class HabitDetailScreen extends StatelessWidget {
           Row(
             children: <Widget>[
               Expanded(
-                child: _StatTile(label: l10n.currentStreak(streak), value: '$streak'),
+                child: _StatTile(
+                  label: l10n.currentStreak(streak),
+                  value: '$streak',
+                ),
               ),
               Expanded(
                 child: _StatTile(label: l10n.bestStreak, value: '$best'),
@@ -105,20 +108,21 @@ class HabitDetailScreen extends StatelessWidget {
   ) async {
     final bool? confirmed = await showDialog<bool>(
       context: context,
-      builder: (BuildContext ctx) => AlertDialog(
-        title: Text(l10n.deleteConfirmTitle),
-        content: Text(l10n.deleteConfirmBody(habit.name)),
-        actions: <Widget>[
-          TextButton(
-            onPressed: () => Navigator.of(ctx).pop(false),
-            child: Text(l10n.cancel),
+      builder:
+          (BuildContext ctx) => AlertDialog(
+            title: Text(l10n.deleteConfirmTitle),
+            content: Text(l10n.deleteConfirmBody(habit.name)),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () => Navigator.of(ctx).pop(false),
+                child: Text(l10n.cancel),
+              ),
+              FilledButton(
+                onPressed: () => Navigator.of(ctx).pop(true),
+                child: Text(l10n.delete),
+              ),
+            ],
           ),
-          FilledButton(
-            onPressed: () => Navigator.of(ctx).pop(true),
-            child: Text(l10n.delete),
-          ),
-        ],
-      ),
     );
     if (confirmed == true) {
       await provider.deleteHabit(habit.id);

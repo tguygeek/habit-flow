@@ -23,9 +23,7 @@ void main() {
 
   testWidgets('renders the habit name', (WidgetTester tester) async {
     await tester.pumpWidget(
-      _wrap(
-        HabitCard(habit: habit, onTap: () {}, onToggleToday: () {}),
-      ),
+      _wrap(HabitCard(habit: habit, onTap: () {}, onToggleToday: () {})),
     );
     expect(find.text('Drink water'), findsOneWidget);
   });
@@ -45,7 +43,9 @@ void main() {
     expect(tapped, isTrue);
   });
 
-  testWidgets('tapping the checkbox triggers onToggleToday', (WidgetTester tester) async {
+  testWidgets('tapping the checkbox triggers onToggleToday', (
+    WidgetTester tester,
+  ) async {
     bool toggled = false;
     await tester.pumpWidget(
       _wrap(

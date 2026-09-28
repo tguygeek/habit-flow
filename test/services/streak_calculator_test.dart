@@ -29,35 +29,41 @@ void main() {
     });
 
     test('counts consecutive days ending today', () {
-      final Habit habit = _habit(completions: <DateTime>{
-        today,
-        today.subtract(const Duration(days: 1)),
-        today.subtract(const Duration(days: 2)),
-      });
+      final Habit habit = _habit(
+        completions: <DateTime>{
+          today,
+          today.subtract(const Duration(days: 1)),
+          today.subtract(const Duration(days: 2)),
+        },
+      );
       expect(StreakCalculator.currentStreak(habit, now: today), 3);
     });
 
     test('still counts streak through yesterday if today not done yet', () {
-      final Habit habit = _habit(completions: <DateTime>{
-        today.subtract(const Duration(days: 1)),
-        today.subtract(const Duration(days: 2)),
-      });
+      final Habit habit = _habit(
+        completions: <DateTime>{
+          today.subtract(const Duration(days: 1)),
+          today.subtract(const Duration(days: 2)),
+        },
+      );
       expect(StreakCalculator.currentStreak(habit, now: today), 2);
     });
 
     test('resets to 0 if there is a gap before yesterday', () {
-      final Habit habit = _habit(completions: <DateTime>{
-        today.subtract(const Duration(days: 3)),
-      });
+      final Habit habit = _habit(
+        completions: <DateTime>{today.subtract(const Duration(days: 3))},
+      );
       expect(StreakCalculator.currentStreak(habit, now: today), 0);
     });
 
     test('breaks the streak on a gap even with older completions', () {
-      final Habit habit = _habit(completions: <DateTime>{
-        today,
-        today.subtract(const Duration(days: 1)),
-        today.subtract(const Duration(days: 5)),
-      });
+      final Habit habit = _habit(
+        completions: <DateTime>{
+          today,
+          today.subtract(const Duration(days: 1)),
+          today.subtract(const Duration(days: 5)),
+        },
+      );
       expect(StreakCalculator.currentStreak(habit, now: today), 2);
     });
   });
@@ -73,14 +79,16 @@ void main() {
     });
 
     test('finds the longest run even if it is not the most recent', () {
-      final Habit habit = _habit(completions: <DateTime>{
-        DateTime(2026, 9, 1),
-        DateTime(2026, 9, 2),
-        DateTime(2026, 9, 3),
-        DateTime(2026, 9, 4),
-        DateTime(2026, 9, 10),
-        DateTime(2026, 9, 11),
-      });
+      final Habit habit = _habit(
+        completions: <DateTime>{
+          DateTime(2026, 9, 1),
+          DateTime(2026, 9, 2),
+          DateTime(2026, 9, 3),
+          DateTime(2026, 9, 4),
+          DateTime(2026, 9, 10),
+          DateTime(2026, 9, 11),
+        },
+      );
       expect(StreakCalculator.bestStreak(habit), 4);
     });
   });
@@ -102,10 +110,9 @@ void main() {
     });
 
     test('returns a partial rate for partial completion', () {
-      final Habit habit = _habit(completions: <DateTime>{
-        today,
-        today.subtract(const Duration(days: 1)),
-      });
+      final Habit habit = _habit(
+        completions: <DateTime>{today, today.subtract(const Duration(days: 1))},
+      );
       expect(
         StreakCalculator.completionRate(habit, windowDays: 4, now: today),
         closeTo(0.5, 0.0001),

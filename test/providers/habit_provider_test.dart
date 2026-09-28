@@ -45,7 +45,10 @@ void main() {
 
   test('addHabit appends a new habit and persists it', () async {
     await provider.load();
-    await provider.addHabit(name: 'Meditate', category: HabitCategory.mindfulness);
+    await provider.addHabit(
+      name: 'Meditate',
+      category: HabitCategory.mindfulness,
+    );
     expect(provider.habits, hasLength(1));
     expect(provider.habits.first.name, 'Meditate');
     expect(repo.saveCallCount, greaterThan(0));
@@ -96,18 +99,15 @@ void main() {
     expect(provider.overallCompletionRate, lessThan(1));
   });
 
-  test(
-    'a mutation issued right after construction is not clobbered by the '
-    'in-flight initial load (regression test)',
-    () async {
-      // Deliberately do NOT await load() before mutating, to reproduce a
-      // fast tap that fires before the initial load resolves.
-      final Future<void> loadFuture = provider.load();
-      final Future<void> addFuture = provider.addHabit(name: 'Fast tap');
+  test('a mutation issued right after construction is not clobbered by the '
+      'in-flight initial load (regression test)', () async {
+    // Deliberately do NOT await load() before mutating, to reproduce a
+    // fast tap that fires before the initial load resolves.
+    final Future<void> loadFuture = provider.load();
+    final Future<void> addFuture = provider.addHabit(name: 'Fast tap');
 
-      await Future.wait<void>(<Future<void>>[loadFuture, addFuture]);
+    await Future.wait<void>(<Future<void>>[loadFuture, addFuture]);
 
-      expect(provider.habits.any((Habit h) => h.name == 'Fast tap'), isTrue);
-    },
-  );
+    expect(provider.habits.any((Habit h) => h.name == 'Fast tap'), isTrue);
+  });
 }

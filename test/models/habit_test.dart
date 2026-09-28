@@ -32,8 +32,9 @@ void main() {
   });
 
   test('toggleDay ignores time-of-day components', () {
-    final Habit toggled =
-        base.toggleDay(DateTime(2026, 3, 2, 23, 59)); // same day, late
+    final Habit toggled = base.toggleDay(
+      DateTime(2026, 3, 2, 23, 59),
+    ); // same day, late
     expect(toggled.completions, isEmpty); // treated as already-completed day
   });
 

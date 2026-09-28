@@ -11,31 +11,31 @@ enum HabitCategory {
   other;
 
   static HabitCategory fromName(String name) => HabitCategory.values.firstWhere(
-        (HabitCategory c) => c.name == name,
-        orElse: () => HabitCategory.other,
-      );
+    (HabitCategory c) => c.name == name,
+    orElse: () => HabitCategory.other,
+  );
 
   IconData get icon => switch (this) {
-        HabitCategory.health => Icons.favorite,
-        HabitCategory.productivity => Icons.bolt,
-        HabitCategory.learning => Icons.menu_book,
-        HabitCategory.mindfulness => Icons.self_improvement,
-        HabitCategory.other => Icons.star,
-      };
+    HabitCategory.health => Icons.favorite,
+    HabitCategory.productivity => Icons.bolt,
+    HabitCategory.learning => Icons.menu_book,
+    HabitCategory.mindfulness => Icons.self_improvement,
+    HabitCategory.other => Icons.star,
+  };
 
   Color get color => switch (this) {
-        HabitCategory.health => Colors.redAccent,
-        HabitCategory.productivity => Colors.orangeAccent,
-        HabitCategory.learning => Colors.blueAccent,
-        HabitCategory.mindfulness => Colors.teal,
-        HabitCategory.other => Colors.purpleAccent,
-      };
+    HabitCategory.health => Colors.redAccent,
+    HabitCategory.productivity => Colors.orangeAccent,
+    HabitCategory.learning => Colors.blueAccent,
+    HabitCategory.mindfulness => Colors.teal,
+    HabitCategory.other => Colors.purpleAccent,
+  };
 
   String label(AppLocalizations l10n) => switch (this) {
-        HabitCategory.health => l10n.categoryHealth,
-        HabitCategory.productivity => l10n.categoryProductivity,
-        HabitCategory.learning => l10n.categoryLearning,
-        HabitCategory.mindfulness => l10n.categoryMindfulness,
-        HabitCategory.other => l10n.categoryOther,
-      };
+    HabitCategory.health => l10n.categoryHealth,
+    HabitCategory.productivity => l10n.categoryProductivity,
+    HabitCategory.learning => l10n.categoryLearning,
+    HabitCategory.mindfulness => l10n.categoryMindfulness,
+    HabitCategory.other => l10n.categoryOther,
+  };
 }

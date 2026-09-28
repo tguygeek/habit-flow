@@ -11,7 +11,7 @@ import 'package:provider/provider.dart';
 /// is required.
 class InMemoryHabitRepository implements HabitRepository {
   InMemoryHabitRepository([List<Habit>? initial])
-      : _habits = List<Habit>.of(initial ?? <Habit>[]);
+    : _habits = List<Habit>.of(initial ?? <Habit>[]);
 
   List<Habit> _habits;
 
@@ -34,9 +34,10 @@ Widget wrapForTest(
   return MultiProvider(
     providers: <ChangeNotifierProvider<dynamic>>[
       ChangeNotifierProvider<HabitProvider>(
-        create: (_) => HabitProvider(
-          repository: InMemoryHabitRepository(initialHabits),
-        )..load(),
+        create:
+            (_) => HabitProvider(
+              repository: InMemoryHabitRepository(initialHabits),
+            )..load(),
       ),
       ChangeNotifierProvider<SettingsProvider>(
         create: (_) => SettingsProvider(),

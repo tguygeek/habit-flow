@@ -29,20 +29,18 @@ class NotificationService {
 
     const DarwinInitializationSettings iosInitializationSettings =
         DarwinInitializationSettings(
-      requestAlertPermission: true,
-      requestBadgePermission: true,
-      requestSoundPermission: true,
-    );
+          requestAlertPermission: true,
+          requestBadgePermission: true,
+          requestSoundPermission: true,
+        );
 
     const InitializationSettings initializationSettings =
         InitializationSettings(
-      android: androidInitializationSettings,
-      iOS: iosInitializationSettings,
-    );
+          android: androidInitializationSettings,
+          iOS: iosInitializationSettings,
+        );
 
-    await _flutterLocalNotificationsPlugin.initialize(
-      initializationSettings,
-    );
+    await _flutterLocalNotificationsPlugin.initialize(initializationSettings);
 
     _isInitialized = true;
   }
@@ -61,8 +59,9 @@ class NotificationService {
     final DateTime today = DateTime(now.year, now.month, now.day);
 
     // Calculate today's reminder time
-    DateTime reminderDateTime =
-        today.add(Duration(hours: reminderHour, minutes: reminderMinute));
+    DateTime reminderDateTime = today.add(
+      Duration(hours: reminderHour, minutes: reminderMinute),
+    );
 
     // If the time has already passed today, schedule for tomorrow
     if (reminderDateTime.isBefore(now)) {
@@ -86,9 +85,10 @@ class NotificationService {
     int hourCounter = 0;
     while (currentTime.isBefore(endOfDay)) {
       final int id = baseNotificationId + hourCounter;
-      final String title = hourCounter == 0
-          ? 'Time for your habit!'
-          : 'Reminder: Complete your habit!';
+      final String title =
+          hourCounter == 0
+              ? 'Time for your habit!'
+              : 'Reminder: Complete your habit!';
 
       await _zonedScheduleNotification(
         id: id,
@@ -139,20 +139,21 @@ class NotificationService {
   }) async {
     const AndroidNotificationDetails androidNotificationDetails =
         AndroidNotificationDetails(
-      'habit_flow_reminders',
-      'Habit Reminders',
-      channelDescription: 'Notifications to remind you to complete your habits',
-      importance: Importance.high,
-      priority: Priority.high,
-      enableVibration: true,
-    );
+          'habit_flow_reminders',
+          'Habit Reminders',
+          channelDescription:
+              'Notifications to remind you to complete your habits',
+          importance: Importance.high,
+          priority: Priority.high,
+          enableVibration: true,
+        );
 
     const DarwinNotificationDetails iosNotificationDetails =
         DarwinNotificationDetails(
-      presentAlert: true,
-      presentBadge: true,
-      presentSound: true,
-    );
+          presentAlert: true,
+          presentBadge: true,
+          presentSound: true,
+        );
 
     const NotificationDetails notificationDetails = NotificationDetails(
       android: androidNotificationDetails,

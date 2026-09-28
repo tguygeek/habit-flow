@@ -18,10 +18,9 @@ class HabitProvider extends ChangeNotifier {
     required HabitRepository repository,
     Uuid? uuid,
     NotificationService? notificationService,
-  })  : _repository = repository,
-        _uuid = uuid ?? const Uuid(),
-        _notificationService =
-            notificationService ?? NotificationService();
+  }) : _repository = repository,
+       _uuid = uuid ?? const Uuid(),
+       _notificationService = notificationService ?? NotificationService();
 
   final HabitRepository _repository;
   final Uuid _uuid;
@@ -191,11 +190,12 @@ class HabitProvider extends ChangeNotifier {
     await _repository.saveAll(_habits);
   }
 
-  int get bestStreakAcrossAll => _habits.isEmpty
-      ? 0
-      : _habits.map(StreakCalculator.bestStreak).reduce(
-          (int a, int b) => a > b ? a : b,
-        );
+  int get bestStreakAcrossAll =>
+      _habits.isEmpty
+          ? 0
+          : _habits
+              .map(StreakCalculator.bestStreak)
+              .reduce((int a, int b) => a > b ? a : b);
 
   double get overallCompletionRate {
     if (_habits.isEmpty) return 0;

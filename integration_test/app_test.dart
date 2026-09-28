@@ -7,25 +7,24 @@ void main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
 
   group('HabitFlow end-to-end', () {
-    testWidgets(
-      'creating a habit from the empty state shows it in the list',
-      (WidgetTester tester) async {
-        await tester.pumpWidget(const HabitFlowApp());
-        await tester.pumpAndSettle();
+    testWidgets('creating a habit from the empty state shows it in the list', (
+      WidgetTester tester,
+    ) async {
+      await tester.pumpWidget(const HabitFlowApp());
+      await tester.pumpAndSettle();
 
-        expect(find.text('No habits yet'), findsOneWidget);
+      expect(find.text('No habits yet'), findsOneWidget);
 
-        await tester.tap(find.byType(FloatingActionButton));
-        await tester.pumpAndSettle();
+      await tester.tap(find.byType(FloatingActionButton));
+      await tester.pumpAndSettle();
 
-        await tester.enterText(find.byType(TextFormField).first, 'Morning run');
-        await tester.tap(find.text('Save'));
-        await tester.pumpAndSettle();
+      await tester.enterText(find.byType(TextFormField).first, 'Morning run');
+      await tester.tap(find.text('Save'));
+      await tester.pumpAndSettle();
 
-        expect(find.text('Morning run'), findsOneWidget);
-        expect(find.text('No habits yet'), findsNothing);
-      },
-    );
+      expect(find.text('Morning run'), findsOneWidget);
+      expect(find.text('No habits yet'), findsNothing);
+    });
 
     testWidgets(
       'marking a habit done today updates the streak on the detail screen',

@@ -32,8 +32,11 @@ abstract class ReminderCalculator {
     DateTime? currentTime,
   }) {
     currentTime ??= DateTime.now();
-    final DateTime today =
-        DateTime(currentTime.year, currentTime.month, currentTime.day);
+    final DateTime today = DateTime(
+      currentTime.year,
+      currentTime.month,
+      currentTime.day,
+    );
 
     DateTime reminderDateTime = today.add(
       Duration(hours: reminderHour, minutes: reminderMinute),
@@ -55,8 +58,7 @@ abstract class ReminderCalculator {
     if (lastScheduledDate == null) return true;
 
     final DateTime today = DateTime.now();
-    final DateTime dateOnlyToday =
-        DateTime(today.year, today.month, today.day);
+    final DateTime dateOnlyToday = DateTime(today.year, today.month, today.day);
     final DateTime dateOnlyLast = DateTime(
       lastScheduledDate.year,
       lastScheduledDate.month,

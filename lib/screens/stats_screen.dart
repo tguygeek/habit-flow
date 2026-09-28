@@ -59,10 +59,7 @@ class _StatCard extends StatelessWidget {
       child: ListTile(
         leading: Icon(icon),
         title: Text(label),
-        trailing: Text(
-          value,
-          style: Theme.of(context).textTheme.titleLarge,
-        ),
+        trailing: Text(value, style: Theme.of(context).textTheme.titleLarge),
       ),
     );
   }

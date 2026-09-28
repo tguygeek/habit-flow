@@ -5,7 +5,9 @@ import 'package:habit_flow/screens/settings_screen.dart';
 import 'test_helpers.dart';
 
 void main() {
-  testWidgets('renders language and theme controls', (WidgetTester tester) async {
+  testWidgets('renders language and theme controls', (
+    WidgetTester tester,
+  ) async {
     await pumpAndSettleTest(tester, wrapForTest(const SettingsScreen()));
 
     expect(find.text('Language'), findsOneWidget);
@@ -14,12 +16,15 @@ void main() {
     expect(find.byType(SegmentedButton<ThemeMode>), findsOneWidget);
   });
 
-  testWidgets('switching the language segment updates the locale-dependent text', (WidgetTester tester) async {
-    await pumpAndSettleTest(tester, wrapForTest(const SettingsScreen()));
+  testWidgets(
+    'switching the language segment updates the locale-dependent text',
+    (WidgetTester tester) async {
+      await pumpAndSettleTest(tester, wrapForTest(const SettingsScreen()));
 
-    await tester.tap(find.text('FR'));
-    await tester.pumpAndSettle();
+      await tester.tap(find.text('FR'));
+      await tester.pumpAndSettle();
 
-    expect(find.text('Paramètres'), findsOneWidget);
-  });
+      expect(find.text('Paramètres'), findsOneWidget);
+    },
+  );
 }

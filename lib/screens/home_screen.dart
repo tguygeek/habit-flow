@@ -26,30 +26,31 @@ class HomeScreen extends StatelessWidget {
           IconButton(
             icon: const Icon(Icons.bar_chart),
             tooltip: l10n.statsTitle,
-            onPressed: () => Navigator.of(context).push(
-              MaterialPageRoute<void>(
-                builder: (_) => const StatsScreen(),
-              ),
-            ),
+            onPressed:
+                () => Navigator.of(context).push(
+                  MaterialPageRoute<void>(builder: (_) => const StatsScreen()),
+                ),
           ),
           IconButton(
             icon: const Icon(Icons.settings),
             tooltip: l10n.settingsTitle,
-            onPressed: () => Navigator.of(context).push(
-              MaterialPageRoute<void>(
-                builder: (_) => const SettingsScreen(),
-              ),
-            ),
+            onPressed:
+                () => Navigator.of(context).push(
+                  MaterialPageRoute<void>(
+                    builder: (_) => const SettingsScreen(),
+                  ),
+                ),
           ),
         ],
       ),
       body: _Body(provider: provider, l10n: l10n),
       floatingActionButton: FloatingActionButton(
-        onPressed: () => Navigator.of(context).push(
-          MaterialPageRoute<void>(
-            builder: (_) => const AddEditHabitScreen(),
-          ),
-        ),
+        onPressed:
+            () => Navigator.of(context).push(
+              MaterialPageRoute<void>(
+                builder: (_) => const AddEditHabitScreen(),
+              ),
+            ),
         tooltip: l10n.addHabit,
         child: const Icon(Icons.add),
       ),
@@ -81,11 +82,12 @@ class _Body extends StatelessWidget {
         return HabitCard(
           key: ValueKey<String>(habit.id),
           habit: habit,
-          onTap: () => Navigator.of(context).push(
-            MaterialPageRoute<void>(
-              builder: (_) => HabitDetailScreen(habitId: habit.id),
-            ),
-          ),
+          onTap:
+              () => Navigator.of(context).push(
+                MaterialPageRoute<void>(
+                  builder: (_) => HabitDetailScreen(habitId: habit.id),
+                ),
+              ),
           onToggleToday: () => provider.toggleToday(habit.id),
         );
       },

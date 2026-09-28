@@ -31,18 +31,20 @@ class WeekHeatmap extends StatelessWidget {
               height: 28,
               alignment: Alignment.center,
               decoration: BoxDecoration(
-                color: habit.isDoneOn(day)
-                    ? habit.category.color
-                    : scheme.surfaceContainerHighest,
+                color:
+                    habit.isDoneOn(day)
+                        ? habit.category.color
+                        : scheme.surfaceContainerHighest,
                 borderRadius: BorderRadius.circular(6),
               ),
               child: Text(
                 '${day.day}',
                 style: TextStyle(
                   fontSize: 11,
-                  color: habit.isDoneOn(day)
-                      ? scheme.onPrimary
-                      : scheme.onSurfaceVariant,
+                  color:
+                      habit.isDoneOn(day)
+                          ? scheme.onPrimary
+                          : scheme.onSurfaceVariant,
                 ),
               ),
             ),

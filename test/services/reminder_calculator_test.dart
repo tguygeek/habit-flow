@@ -84,7 +84,11 @@ void main() {
   group('ReminderCalculator.wasCompletedBeforeDeadlineToday', () {
     test('returns true when task is completed today', () {
       final DateTime today = DateTime.now();
-      final DateTime dateOnlyToday = DateTime(today.year, today.month, today.day);
+      final DateTime dateOnlyToday = DateTime(
+        today.year,
+        today.month,
+        today.day,
+      );
 
       expect(
         ReminderCalculator.wasCompletedBeforeDeadlineToday(
@@ -104,10 +108,14 @@ void main() {
     });
 
     test('returns false when only yesterday is completed', () {
-      final DateTime yesterday =
-          DateTime.now().subtract(const Duration(days: 1));
-      final DateTime dateOnlyYesterday =
-          DateTime(yesterday.year, yesterday.month, yesterday.day);
+      final DateTime yesterday = DateTime.now().subtract(
+        const Duration(days: 1),
+      );
+      final DateTime dateOnlyYesterday = DateTime(
+        yesterday.year,
+        yesterday.month,
+        yesterday.day,
+      );
 
       expect(
         ReminderCalculator.wasCompletedBeforeDeadlineToday(
@@ -119,11 +127,17 @@ void main() {
 
     test('returns true when today and other days are completed', () {
       final DateTime today = DateTime.now();
-      final DateTime dateOnlyToday = DateTime(today.year, today.month, today.day);
-      final DateTime yesterday =
-          today.subtract(const Duration(days: 1));
-      final DateTime dateOnlyYesterday =
-          DateTime(yesterday.year, yesterday.month, yesterday.day);
+      final DateTime dateOnlyToday = DateTime(
+        today.year,
+        today.month,
+        today.day,
+      );
+      final DateTime yesterday = today.subtract(const Duration(days: 1));
+      final DateTime dateOnlyYesterday = DateTime(
+        yesterday.year,
+        yesterday.month,
+        yesterday.day,
+      );
 
       expect(
         ReminderCalculator.wasCompletedBeforeDeadlineToday(
@@ -137,12 +151,11 @@ void main() {
   group('ReminderCalculator.getNextReminderTime', () {
     test('returns today at specified time when time has not passed yet', () {
       final DateTime now = DateTime(2026, 9, 20, 8, 0); // 08:00
-      final DateTime nextReminder =
-          ReminderCalculator.getNextReminderTime(
-            reminderHour: 9,
-            reminderMinute: 30,
-            currentTime: now,
-          );
+      final DateTime nextReminder = ReminderCalculator.getNextReminderTime(
+        reminderHour: 9,
+        reminderMinute: 30,
+        currentTime: now,
+      );
 
       expect(nextReminder.hour, 9);
       expect(nextReminder.minute, 30);
@@ -153,12 +166,11 @@ void main() {
 
     test('returns tomorrow at specified time when time has passed today', () {
       final DateTime now = DateTime(2026, 9, 20, 10, 0); // 10:00
-      final DateTime nextReminder =
-          ReminderCalculator.getNextReminderTime(
-            reminderHour: 9,
-            reminderMinute: 0,
-            currentTime: now,
-          );
+      final DateTime nextReminder = ReminderCalculator.getNextReminderTime(
+        reminderHour: 9,
+        reminderMinute: 0,
+        currentTime: now,
+      );
 
       expect(nextReminder.hour, 9);
       expect(nextReminder.minute, 0);
@@ -167,12 +179,11 @@ void main() {
 
     test('handles midnight boundary correctly', () {
       final DateTime now = DateTime(2026, 9, 20, 23, 30); // 23:30
-      final DateTime nextReminder =
-          ReminderCalculator.getNextReminderTime(
-            reminderHour: 0,
-            reminderMinute: 0,
-            currentTime: now,
-          );
+      final DateTime nextReminder = ReminderCalculator.getNextReminderTime(
+        reminderHour: 0,
+        reminderMinute: 0,
+        currentTime: now,
+      );
 
       expect(nextReminder.hour, 0);
       expect(nextReminder.minute, 0);
@@ -180,12 +191,11 @@ void main() {
     });
 
     test('uses current time as default when currentTime is null', () {
-      final DateTime nextReminder =
-          ReminderCalculator.getNextReminderTime(
-            reminderHour: 23,
-            reminderMinute: 59,
-            currentTime: null,
-          );
+      final DateTime nextReminder = ReminderCalculator.getNextReminderTime(
+        reminderHour: 23,
+        reminderMinute: 59,
+        currentTime: null,
+      );
 
       // Should return a valid DateTime in the future
       expect(nextReminder.isAfter(DateTime.now()), true);
@@ -195,12 +205,11 @@ void main() {
 
     test('returns exact time at edge case: 00:00', () {
       final DateTime now = DateTime(2026, 9, 20, 1, 0);
-      final DateTime nextReminder =
-          ReminderCalculator.getNextReminderTime(
-            reminderHour: 0,
-            reminderMinute: 0,
-            currentTime: now,
-          );
+      final DateTime nextReminder = ReminderCalculator.getNextReminderTime(
+        reminderHour: 0,
+        reminderMinute: 0,
+        currentTime: now,
+      );
 
       expect(nextReminder.hour, 0);
       expect(nextReminder.minute, 0);
@@ -209,12 +218,11 @@ void main() {
 
     test('returns exact time at edge case: 23:59', () {
       final DateTime now = DateTime(2026, 9, 20, 8, 0);
-      final DateTime nextReminder =
-          ReminderCalculator.getNextReminderTime(
-            reminderHour: 23,
-            reminderMinute: 59,
-            currentTime: now,
-          );
+      final DateTime nextReminder = ReminderCalculator.getNextReminderTime(
+        reminderHour: 23,
+        reminderMinute: 59,
+        currentTime: now,
+      );
 
       expect(nextReminder.hour, 23);
       expect(nextReminder.minute, 59);
@@ -234,8 +242,11 @@ void main() {
 
     test('returns false when lastScheduledDate is today', () {
       final DateTime today = DateTime.now();
-      final DateTime dateOnlyToday =
-          DateTime(today.year, today.month, today.day);
+      final DateTime dateOnlyToday = DateTime(
+        today.year,
+        today.month,
+        today.day,
+      );
 
       expect(
         ReminderCalculator.shouldResetRemindersForNewDay(
@@ -248,8 +259,11 @@ void main() {
     test('returns true when lastScheduledDate is yesterday', () {
       final DateTime now = DateTime.now();
       final DateTime yesterday = now.subtract(const Duration(days: 1));
-      final DateTime dateOnlyYesterday =
-          DateTime(yesterday.year, yesterday.month, yesterday.day);
+      final DateTime dateOnlyYesterday = DateTime(
+        yesterday.year,
+        yesterday.month,
+        yesterday.day,
+      );
 
       expect(
         ReminderCalculator.shouldResetRemindersForNewDay(
@@ -262,8 +276,11 @@ void main() {
     test('returns true when lastScheduledDate is several days ago', () {
       final DateTime now = DateTime.now();
       final DateTime daysAgo = now.subtract(const Duration(days: 5));
-      final DateTime dateOnlyDaysAgo =
-          DateTime(daysAgo.year, daysAgo.month, daysAgo.day);
+      final DateTime dateOnlyDaysAgo = DateTime(
+        daysAgo.year,
+        daysAgo.month,
+        daysAgo.day,
+      );
 
       expect(
         ReminderCalculator.shouldResetRemindersForNewDay(
@@ -275,8 +292,14 @@ void main() {
 
     test('returns false when time components differ but date is the same', () {
       final DateTime now = DateTime.now();
-      final DateTime todayWithTime =
-          DateTime(now.year, now.month, now.day, 10, 30, 45);
+      final DateTime todayWithTime = DateTime(
+        now.year,
+        now.month,
+        now.day,
+        10,
+        30,
+        45,
+      );
 
       expect(
         ReminderCalculator.shouldResetRemindersForNewDay(

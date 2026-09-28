@@ -13,7 +13,8 @@ class SettingsScreen extends StatelessWidget {
     final AppLocalizations l10n = AppLocalizations.of(context);
     final SettingsProvider settings = context.watch<SettingsProvider>();
     final String currentLang =
-        settings.locale?.languageCode ?? Localizations.localeOf(context).languageCode;
+        settings.locale?.languageCode ??
+        Localizations.localeOf(context).languageCode;
 
     return Scaffold(
       appBar: AppBar(title: Text(l10n.settingsTitle)),
@@ -56,10 +57,7 @@ class SettingsScreen extends StatelessWidget {
             ),
           ),
           const Divider(),
-          ListTile(
-            title: Text(l10n.about),
-            subtitle: Text(l10n.aboutBody),
-          ),
+          ListTile(title: Text(l10n.about), subtitle: Text(l10n.aboutBody)),
         ],
       ),
     );

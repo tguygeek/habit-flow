@@ -9,7 +9,7 @@ import 'habit_repository.dart';
 /// as a single JSON-encoded string under [storageKey].
 class LocalHabitRepository implements HabitRepository {
   LocalHabitRepository({SharedPreferences? preferences})
-      : _preferences = preferences;
+    : _preferences = preferences;
 
   static const String storageKey = 'habit_flow.habits.v1';
 
@@ -32,8 +32,9 @@ class LocalHabitRepository implements HabitRepository {
   @override
   Future<void> saveAll(List<Habit> habits) async {
     final SharedPreferences prefs = await _prefs;
-    final String encoded =
-        jsonEncode(habits.map((Habit h) => h.toJson()).toList());
+    final String encoded = jsonEncode(
+      habits.map((Habit h) => h.toJson()).toList(),
+    );
     await prefs.setString(storageKey, encoded);
   }
 }

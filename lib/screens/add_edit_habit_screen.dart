@@ -100,10 +100,11 @@ class _AddEditHabitScreenState extends State<AddEditHabitScreen> {
                 hintText: l10n.habitNameHint,
               ),
               textInputAction: TextInputAction.next,
-              validator: (String? value) =>
-                  (value == null || value.trim().isEmpty)
-                      ? l10n.nameRequired
-                      : null,
+              validator:
+                  (String? value) =>
+                      (value == null || value.trim().isEmpty)
+                          ? l10n.nameRequired
+                          : null,
             ),
             const SizedBox(height: 16),
             TextFormField(
@@ -144,8 +145,8 @@ class _AddEditHabitScreenState extends State<AddEditHabitScreen> {
                 max: 7,
                 divisions: 6,
                 label: '$_weeklyTarget',
-                onChanged: (double v) =>
-                    setState(() => _weeklyTarget = v.round()),
+                onChanged:
+                    (double v) => setState(() => _weeklyTarget = v.round()),
               ),
             ),
             const SizedBox(height: 24),
@@ -216,10 +217,7 @@ class _AddEditHabitScreenState extends State<AddEditHabitScreen> {
               ),
             ],
             const SizedBox(height: 24),
-            FilledButton(
-              onPressed: _save,
-              child: Text(l10n.save),
-            ),
+            FilledButton(onPressed: _save, child: Text(l10n.save)),
           ],
         ),
       ),
