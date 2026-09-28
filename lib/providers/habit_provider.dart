@@ -6,18 +6,26 @@ import 'package:uuid/uuid.dart';
 import '../models/habit.dart';
 import '../models/habit_category.dart';
 import '../repositories/habit_repository.dart';
+import '../services/notification_service.dart';
+import '../services/reminder_calculator.dart';
 import '../services/streak_calculator.dart';
 
 /// Holds the in-memory list of habits, persists changes through a
 /// [HabitRepository], and exposes derived stats. This is the single
 /// source of truth the UI layer listens to via [ChangeNotifier].
 class HabitProvider extends ChangeNotifier {
-  HabitProvider({required HabitRepository repository, Uuid? uuid})
-      : _repository = repository,
-        _uuid = uuid ?? const Uuid();
+  HabitProvider({
+    required HabitRepository repository,
+    Uuid? uuid,
+    NotificationService? notificationService,
+  })  : _repository = repository,
+        _uuid = uuid ?? const Uuid(),
+        _notificationService =
+            notificationService ?? NotificationService();
 
   final HabitRepository _repository;
   final Uuid _uuid;
+  final NotificationService _notificationService;
 
   List<Habit> _habits = <Habit>[];
   bool _isLoading = true;
@@ -36,6 +44,7 @@ class HabitProvider extends ChangeNotifier {
   Future<void> _runLoad(Completer<void> completer) async {
     _isLoading = true;
     notifyListeners();
+    await _notificationService.initialize();
     final List<Habit> loaded = await _repository.loadAll();
     _habits = loaded;
     _isLoading = false;
@@ -89,6 +98,22 @@ class HabitProvider extends ChangeNotifier {
     ];
     notifyListeners();
     await _repository.saveAll(_habits);
+
+    // Handle notifications based on reminder settings
+    if (ReminderCalculator.shouldHaveReminder(
+      enableReminders: updated.enableReminders,
+      reminderHour: updated.reminderHour,
+      reminderMinute: updated.reminderMinute,
+    )) {
+      await _notificationService.scheduleReminder(
+        habitId: updated.id,
+        habitName: updated.name,
+        reminderHour: updated.reminderHour!,
+        reminderMinute: updated.reminderMinute!,
+      );
+    } else {
+      await _notificationService.cancelReminders(updated.id);
+    }
   }
 
   Future<void> deleteHabit(String id) async {
@@ -96,6 +121,7 @@ class HabitProvider extends ChangeNotifier {
     _habits = _habits.where((Habit h) => h.id != id).toList();
     notifyListeners();
     await _repository.saveAll(_habits);
+    await _notificationService.cancelReminders(id);
   }
 
   Future<void> toggleToday(String id) async {
@@ -108,6 +134,22 @@ class HabitProvider extends ChangeNotifier {
     if (index == -1) return;
     _habits = <Habit>[..._habits];
     _habits[index] = _habits[index].toggleDay(day);
+
+    final Habit updated = _habits[index];
+
+    // Send completion notification if habit was just completed and has reminders
+    if (updated.isDoneOn(day) &&
+        ReminderCalculator.shouldHaveReminder(
+          enableReminders: updated.enableReminders,
+          reminderHour: updated.reminderHour,
+          reminderMinute: updated.reminderMinute,
+        )) {
+      await _notificationService.scheduleCompletionNotification(
+        habitId: updated.id,
+        habitName: updated.name,
+      );
+    }
+
     notifyListeners();
     await _repository.saveAll(_habits);
   }

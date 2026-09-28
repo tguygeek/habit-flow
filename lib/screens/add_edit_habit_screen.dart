@@ -25,6 +25,9 @@ class _AddEditHabitScreenState extends State<AddEditHabitScreen> {
   late final TextEditingController _descController;
   late HabitCategory _category;
   late int _weeklyTarget;
+  late bool _enableReminders;
+  late int? _reminderHour;
+  late int? _reminderMinute;
 
   @override
   void initState() {
@@ -34,6 +37,9 @@ class _AddEditHabitScreenState extends State<AddEditHabitScreen> {
     _descController = TextEditingController(text: existing?.description ?? '');
     _category = existing?.category ?? HabitCategory.other;
     _weeklyTarget = existing?.weeklyTarget ?? 5;
+    _enableReminders = existing?.enableReminders ?? false;
+    _reminderHour = existing?.reminderHour;
+    _reminderMinute = existing?.reminderMinute;
   }
 
   @override
@@ -62,6 +68,9 @@ class _AddEditHabitScreenState extends State<AddEditHabitScreen> {
           description: _descController.text.trim(),
           category: _category,
           weeklyTarget: _weeklyTarget,
+          reminderHour: _reminderHour,
+          reminderMinute: _reminderMinute,
+          enableReminders: _enableReminders,
         ),
       );
     }
@@ -136,6 +145,73 @@ class _AddEditHabitScreenState extends State<AddEditHabitScreen> {
                     setState(() => _weeklyTarget = v.round()),
               ),
             ),
+            const SizedBox(height: 24),
+            SwitchListTile(
+              title: const Text('Enable Reminders'),
+              subtitle: const Text(
+                'Get hourly notifications to complete this habit',
+              ),
+              value: _enableReminders,
+              onChanged: (bool value) {
+                setState(() => _enableReminders = value);
+              },
+            ),
+            if (_enableReminders) ...<Widget>[
+              const SizedBox(height: 16),
+              Row(
+                children: <Widget>[
+                  Expanded(
+                    child: TextFormField(
+                      initialValue:
+                          _reminderHour?.toString().padLeft(2, '0') ?? '09',
+                      decoration: const InputDecoration(
+                        labelText: 'Hour',
+                        hintText: '00-23',
+                      ),
+                      keyboardType: TextInputType.number,
+                      validator: (String? value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Required';
+                        }
+                        final int? hour = int.tryParse(value);
+                        if (hour == null || hour < 0 || hour > 23) {
+                          return 'Invalid hour';
+                        }
+                        return null;
+                      },
+                      onChanged: (String value) {
+                        _reminderHour = int.tryParse(value);
+                      },
+                    ),
+                  ),
+                  const SizedBox(width: 16),
+                  Expanded(
+                    child: TextFormField(
+                      initialValue:
+                          _reminderMinute?.toString().padLeft(2, '0') ?? '00',
+                      decoration: const InputDecoration(
+                        labelText: 'Minute',
+                        hintText: '00-59',
+                      ),
+                      keyboardType: TextInputType.number,
+                      validator: (String? value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Required';
+                        }
+                        final int? minute = int.tryParse(value);
+                        if (minute == null || minute < 0 || minute > 59) {
+                          return 'Invalid minute';
+                        }
+                        return null;
+                      },
+                      onChanged: (String value) {
+                        _reminderMinute = int.tryParse(value);
+                      },
+                    ),
+                  ),
+                ],
+              ),
+            ],
             const SizedBox(height: 24),
             FilledButton(
               onPressed: _save,

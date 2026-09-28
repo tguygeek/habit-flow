@@ -16,6 +16,9 @@ class Habit {
     this.weeklyTarget = 5,
     this.completions = const <DateTime>{},
     this.imageUrl,
+    this.reminderHour,
+    this.reminderMinute,
+    this.enableReminders = false,
   });
 
   final String id;
@@ -26,6 +29,9 @@ class Habit {
   final DateTime createdAt;
   final Set<DateTime> completions;
   final String? imageUrl;
+  final int? reminderHour;
+  final int? reminderMinute;
+  final bool enableReminders;
 
   static DateTime dateOnly(DateTime d) => DateTime(d.year, d.month, d.day);
 
@@ -40,6 +46,9 @@ class Habit {
     int? weeklyTarget,
     Set<DateTime>? completions,
     String? imageUrl,
+    int? reminderHour,
+    int? reminderMinute,
+    bool? enableReminders,
   }) {
     return Habit(
       id: id,
@@ -50,6 +59,9 @@ class Habit {
       createdAt: createdAt,
       completions: completions ?? this.completions,
       imageUrl: imageUrl ?? this.imageUrl,
+      reminderHour: reminderHour ?? this.reminderHour,
+      reminderMinute: reminderMinute ?? this.reminderMinute,
+      enableReminders: enableReminders ?? this.enableReminders,
     );
   }
 
@@ -72,6 +84,9 @@ class Habit {
         'completions':
             completions.map((DateTime d) => d.toIso8601String()).toList(),
         'imageUrl': imageUrl,
+        'reminderHour': reminderHour,
+        'reminderMinute': reminderMinute,
+        'enableReminders': enableReminders,
       };
 
   factory Habit.fromJson(Map<String, dynamic> json) {
@@ -86,6 +101,9 @@ class Habit {
           .map((dynamic e) => DateTime.parse(e as String))
           .toSet(),
       imageUrl: json['imageUrl'] as String?,
+      reminderHour: (json['reminderHour'] as num?)?.toInt(),
+      reminderMinute: (json['reminderMinute'] as num?)?.toInt(),
+      enableReminders: (json['enableReminders'] as bool?) ?? false,
     );
   }
 
@@ -100,7 +118,10 @@ class Habit {
         other.weeklyTarget == weeklyTarget &&
         other.createdAt == createdAt &&
         setEquals(other.completions, completions) &&
-        other.imageUrl == imageUrl;
+        other.imageUrl == imageUrl &&
+        other.reminderHour == reminderHour &&
+        other.reminderMinute == reminderMinute &&
+        other.enableReminders == enableReminders;
   }
 
   @override
@@ -113,5 +134,8 @@ class Habit {
         createdAt,
         completions.length,
         imageUrl,
+        reminderHour,
+        reminderMinute,
+        enableReminders,
       );
 }
