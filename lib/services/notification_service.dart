@@ -74,7 +74,14 @@ class NotificationService {
     final int baseNotificationId = habitId.hashCode.abs() % 900000 + 100000;
 
     DateTime currentTime = reminderDateTime;
-    final DateTime endOfDay = DateTime(today.year, today.month, today.day, 23, 59);
+    // Calculate endOfDay using the same day as reminderDateTime (not today's date)
+    final DateTime endOfDay = DateTime(
+      reminderDateTime.year,
+      reminderDateTime.month,
+      reminderDateTime.day,
+      23,
+      59,
+    );
 
     int hourCounter = 0;
     while (currentTime.isBefore(endOfDay)) {

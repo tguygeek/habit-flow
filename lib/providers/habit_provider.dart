@@ -47,6 +47,23 @@ class HabitProvider extends ChangeNotifier {
     await _notificationService.initialize();
     final List<Habit> loaded = await _repository.loadAll();
     _habits = loaded;
+
+    // Restore reminders for all habits that have them enabled
+    for (final Habit habit in _habits) {
+      if (ReminderCalculator.shouldHaveReminder(
+        enableReminders: habit.enableReminders,
+        reminderHour: habit.reminderHour,
+        reminderMinute: habit.reminderMinute,
+      )) {
+        await _notificationService.scheduleReminder(
+          habitId: habit.id,
+          habitName: habit.name,
+          reminderHour: habit.reminderHour!,
+          reminderMinute: habit.reminderMinute!,
+        );
+      }
+    }
+
     _isLoading = false;
     notifyListeners();
     completer.complete();
