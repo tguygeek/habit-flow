@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 
 import 'l10n/app_localizations.dart';
@@ -7,7 +10,14 @@ import 'providers/settings_provider.dart';
 import 'repositories/local_habit_repository.dart';
 import 'screens/home_screen.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  // Request notification permission on Android 13+
+  if (Platform.isAndroid) {
+    await Permission.notification.request();
+  }
+
   runApp(const HabitFlowApp());
 }
 
