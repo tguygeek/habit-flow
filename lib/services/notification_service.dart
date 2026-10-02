@@ -1,6 +1,6 @@
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:flutter/material.dart';
-import 'package:timezone/timezone.dart' as tz;
+import 'package:timezone/data/latest.dart' as tz;
 
 /// Service for managing local notifications using [AwesomeNotifications].
 class NotificationService {
@@ -22,8 +22,10 @@ class NotificationService {
     // Initialize timezone support
     tz.initializeTimeZones();
 
+    final awesomeNotifications = AwesomeNotifications();
+
     // Initialize AwesomeNotifications with channel setup
-    await AwesomeNotifications.initialize(
+    await awesomeNotifications.initialize(
       null,
       [
         NotificationChannel(
@@ -33,7 +35,7 @@ class NotificationService {
               'Notifications to remind you to complete your habits',
           defaultColor: const Color(0xFF9C27B0),
           ledColor: const Color(0xFF9C27B0),
-          importance: NotificationChannelImportance.High,
+          importance: NotificationImportance.High,
           channelShowBadge: true,
           enableVibration: true,
           enableLights: true,
@@ -125,10 +127,11 @@ class NotificationService {
     if (!_isInitialized) await initialize();
 
     final int baseId = habitId.hashCode.abs() % 900000 + 100000;
+    final awesomeNotifications = AwesomeNotifications();
 
     // Cancel up to 24 hourly notifications
     for (int i = 0; i < 24; i++) {
-      await AwesomeNotifications.cancel(baseId + i);
+      await awesomeNotifications.cancel(baseId + i);
     }
   }
 
@@ -138,7 +141,7 @@ class NotificationService {
     required String body,
     required DateTime scheduledTime,
   }) async {
-    final bool result = await AwesomeNotifications.createNotification(
+    final bool result = await AwesomeNotifications().createNotification(
       content: NotificationContent(
         id: id,
         channelKey: 'habit_flow_reminders',
@@ -150,7 +153,7 @@ class NotificationService {
         fullScreenIntent: false,
       ),
       schedule: NotificationCalendar.fromDate(
-        preciseDate: scheduledTime,
+        date: scheduledTime,
         allowWhileIdle: true,
       ),
     );
