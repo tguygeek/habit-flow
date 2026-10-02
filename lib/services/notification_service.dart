@@ -1,7 +1,8 @@
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:awesome_notifications/awesome_notifications.dart';
+import 'package:flutter/material.dart';
 import 'package:timezone/timezone.dart' as tz;
 
-/// Service for managing local notifications using [FlutterLocalNotificationsPlugin].
+/// Service for managing local notifications using [AwesomeNotifications].
 class NotificationService {
   static final NotificationService _instance = NotificationService._internal();
 
@@ -10,9 +11,6 @@ class NotificationService {
   }
 
   NotificationService._internal();
-
-  final FlutterLocalNotificationsPlugin _flutterLocalNotificationsPlugin =
-      FlutterLocalNotificationsPlugin();
 
   bool _isInitialized = false;
 
@@ -24,23 +22,26 @@ class NotificationService {
     // Initialize timezone support
     tz.initializeTimeZones();
 
-    const AndroidInitializationSettings androidInitializationSettings =
-        AndroidInitializationSettings('app_icon');
-
-    const DarwinInitializationSettings iosInitializationSettings =
-        DarwinInitializationSettings(
-          requestAlertPermission: true,
-          requestBadgePermission: true,
-          requestSoundPermission: true,
-        );
-
-    const InitializationSettings initializationSettings =
-        InitializationSettings(
-          android: androidInitializationSettings,
-          iOS: iosInitializationSettings,
-        );
-
-    await _flutterLocalNotificationsPlugin.initialize(initializationSettings);
+    // Initialize AwesomeNotifications with channel setup
+    await AwesomeNotifications.initialize(
+      null,
+      [
+        NotificationChannel(
+          channelKey: 'habit_flow_reminders',
+          channelName: 'Habit Reminders',
+          channelDescription:
+              'Notifications to remind you to complete your habits',
+          defaultColor: const Color(0xFF9C27B0),
+          ledColor: const Color(0xFF9C27B0),
+          importance: NotificationChannelImportance.High,
+          channelShowBadge: true,
+          enableVibration: true,
+          enableLights: true,
+          playSound: true,
+        ),
+      ],
+      debug: true,
+    );
 
     _isInitialized = true;
   }
@@ -90,7 +91,7 @@ class NotificationService {
               ? 'Time for your habit!'
               : 'Reminder: Complete your habit!';
 
-      await _zonedScheduleNotification(
+      await _scheduleNotificationForTime(
         id: id,
         title: title,
         body: habitName,
@@ -111,7 +112,7 @@ class NotificationService {
 
     final int baseId = habitId.hashCode.abs() % 900000 + 100000;
 
-    await _zonedScheduleNotification(
+    await _scheduleNotificationForTime(
       id: baseId,
       title: 'Great job!',
       body: 'You completed $habitName on time!',
@@ -127,63 +128,35 @@ class NotificationService {
 
     // Cancel up to 24 hourly notifications
     for (int i = 0; i < 24; i++) {
-      await _flutterLocalNotificationsPlugin.cancel(baseId + i);
+      await AwesomeNotifications.cancel(baseId + i);
     }
   }
 
-  Future<void> _zonedScheduleNotification({
+  Future<void> _scheduleNotificationForTime({
     required int id,
     required String title,
     required String body,
     required DateTime scheduledTime,
   }) async {
-    const AndroidNotificationDetails androidNotificationDetails =
-        AndroidNotificationDetails(
-          'habit_flow_reminders',
-          'Habit Reminders',
-          channelDescription:
-              'Notifications to remind you to complete your habits',
-          importance: Importance.high,
-          priority: Priority.high,
-          enableVibration: true,
-        );
-
-    const DarwinNotificationDetails iosNotificationDetails =
-        DarwinNotificationDetails(
-          presentAlert: true,
-          presentBadge: true,
-          presentSound: true,
-        );
-
-    const NotificationDetails notificationDetails = NotificationDetails(
-      android: androidNotificationDetails,
-      iOS: iosNotificationDetails,
+    final bool result = await AwesomeNotifications.createNotification(
+      content: NotificationContent(
+        id: id,
+        channelKey: 'habit_flow_reminders',
+        title: title,
+        body: body,
+        notificationLayout: NotificationLayout.Default,
+        displayOnForeground: true,
+        wakeUpScreen: true,
+        fullScreenIntent: false,
+      ),
+      schedule: NotificationCalendar.fromDate(
+        preciseDate: scheduledTime,
+        allowWhileIdle: true,
+      ),
     );
 
-    final tz.TZDateTime tzScheduledTime = tz.TZDateTime.from(
-      scheduledTime,
-      tz.local,
-    );
-
-    try {
-      await _flutterLocalNotificationsPlugin.zonedSchedule(
-        id,
-        title,
-        body,
-        tzScheduledTime,
-        notificationDetails,
-        androidScheduleMode: AndroidScheduleMode.exactAndAllowWhileIdle,
-        uiLocalNotificationDateInterpretationOptions:
-            UILocalNotificationDateInterpretationOptions.absoluteTime,
-      );
-    } catch (e) {
-      // Fallback if timezone-aware scheduling fails
-      await _flutterLocalNotificationsPlugin.show(
-        id,
-        title,
-        body,
-        notificationDetails,
-      );
+    if (!result) {
+      debugPrint('Failed to schedule notification: $id');
     }
   }
 }
